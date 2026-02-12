@@ -1,0 +1,40 @@
+﻿@model List<ChartPoint>
+
+
+@{
+    ViewData["Title"] = "Employee Growth Dashboard";
+} 
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<h2>Employee Growth Line-Chart (Year Wise)</h2>
+
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Employee Growth Per Year"
+            },
+            axisY: {
+                title: "Number of Employees"
+            },
+            data: [{
+                type: "line",
+                dataPoints: @Html.Raw(
+                    Json.Serialize(
+                        Model.Select(x => new {
+                            label = x.Label,
+                            y = x.Value
+                        })
+                    )
+                )
+            }]
+        });
+
+        chart.render();
+    }
+</script>
